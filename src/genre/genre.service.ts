@@ -4,20 +4,20 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities/user.entity';
+import { CreateGenreDto } from './dto/create-genre.dto';
+import { UpdateGenreDto } from './dto/update-genre.dto';
+import { Genre } from './entities/genre.entity';
 
 @Injectable()
-export class UserService {
+export class GenreService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(id: string, updateGenreDto: UpdateGenreDto): Promise<Genre> {
     await this.findById(id);
 
-    const data: Partial<User> = { ...updateUserDto };
+    const data: Partial<Genre> = { ...updateGenreDto };
 
-    return this.prisma.user.update({
+    return this.prisma.genre.update({
       where: { id },
       data,
     });
@@ -26,25 +26,25 @@ export class UserService {
   async remove(id: string) {
     await this.findById(id);
 
-    await this.prisma.user.delete({ where: { id } });
+    await this.prisma.genre.delete({ where: { id } });
   }
 
-  findAll(): Promise<User[]> {
-    return this.prisma.user.findMany();
+  findAll(): Promise<Genre[]> {
+    return this.prisma.genre.findMany();
   }
 
-  async findOne(id: string): Promise<User> {
+  async findOne(id: string): Promise<Genre> {
     return this.findById(id);
   }
 
-  create(dto: CreateUserDto): Promise<User> {
-    const data: User = { ...dto };
+  create(dto: CreateGenreDto): Promise<Genre> {
+    const data: Genre = { ...dto };
 
-    return this.prisma.user.create({ data }).catch(this.handleError);
+    return this.prisma.genre.create({ data }).catch(this.handleError);
   }
 
-  async findById(id: string): Promise<User> {
-    const record = await this.prisma.user.findUnique({ where: { id } });
+  async findById(id: string): Promise<Genre> {
+    const record = await this.prisma.genre.findUnique({ where: { id } });
     if (!record) {
       throw new NotFoundException(`Registro com o Id '${id}' não encontrado.`);
     }
