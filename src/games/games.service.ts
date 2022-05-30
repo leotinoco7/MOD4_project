@@ -38,7 +38,12 @@ export class GameService {
   }
 
   create(dto: CreateGameDto): Promise<Game> {
-    const data: Game = { ...dto };
+    const data: Game = {
+      ...dto,
+      id: '',
+      createdAt: undefined,
+      updatedAt: undefined,
+    };
 
     return this.prisma.game.create({ data }).catch(this.handleError);
   }
