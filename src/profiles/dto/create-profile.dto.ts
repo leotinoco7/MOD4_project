@@ -4,26 +4,13 @@ import { IsNotEmpty, IsString, IsUrl, Length } from 'class-validator';
 export class CreateProfileDto {
   @Length(3, 10)
   @ApiProperty({
-    description: 'Nome do usuário. Deve conter de 3 a 10 letras',
-    example: 'João',
+    description: 'Nome do perfil. Deve conter de 3 a 10 letras',
+    example: 'Perfil1',
   })
   @IsNotEmpty()
   @IsString()
-  name: string;
+  title: string;
 
-  @ApiProperty({
-    description: 'Nickname',
-    example: 'joao123',
-  })
-  @IsNotEmpty()
-  @IsString()
-  nickname: string;
-
-  @Length(8, 16)
-  @ApiProperty({
-    description: 'Password',
-    example: 'De 8 a 16 letras',
-  })
   @IsNotEmpty()
   @IsString()
   password: string;
@@ -34,5 +21,5 @@ export class CreateProfileDto {
   })
   @IsUrl()
   @IsString()
-  image: string;
+  imageURL: string;
 }
