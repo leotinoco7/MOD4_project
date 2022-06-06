@@ -1,9 +1,9 @@
 import {
   Injectable,
   NotFoundException,
-  UnprocessableEntityException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { handleError } from 'src/utils/handle-error.util';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { Game } from './entities/game.entity';
@@ -45,7 +45,7 @@ export class GameService {
       updatedAt: undefined,
     };
 
-    return this.prisma.game.create({ data }).catch(this.handleError);
+    return this.prisma.game.create({ data }).catch(handleError);
   }
 
   async findById(id: string): Promise<Game> {
@@ -54,14 +54,5 @@ export class GameService {
       throw new NotFoundException(`Registro com o Id '${id}' não encontrado.`);
     }
     return record;
-  }
-
-  handleError(error: Error): undefined {
-    const errorLines = error.message?.split('\n');
-    const lastErrorLine = errorLines[errorLines.length - 1]?.trim();
-
-    throw new UnprocessableEntityException(
-      lastErrorLine || 'Algum erro ocorreu ao executar a operação.',
-    );
   }
 }
