@@ -13,19 +13,19 @@ export class CreateGameDto {
   @IsNotEmpty()
   @IsString()
   @ApiProperty({
-    description: 'nome do jogo',
-    example: 'Call of Duty',
+    description: 'Título do jogo',
+    example: 'Call of Duty Modern Warfare 3',
   })
-  name: string;
+  title: string;
 
   @IsNotEmpty()
   @IsString()
   @IsUrl()
   @ApiProperty({
     description: 'url da capa',
-    example: 'url',
+    example: 'gameexample.com.br/foto.jpg',
   })
-  image: string;
+  coverImageURL: string;
 
   @IsNotEmpty()
   @IsString()
@@ -35,7 +35,7 @@ export class CreateGameDto {
     description: 'descrição do jogo',
     example: 'fps',
   })
-  desc: string;
+  description: string;
 
   @IsNotEmpty()
   @IsNumber()
@@ -51,9 +51,17 @@ export class CreateGameDto {
   @IsUrl()
   @ApiProperty({
     description: 'Uurl do trailer.',
-    example: 'url',
+    example: 'youtube.com/watch?id',
   })
   trailerYt: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  @ApiProperty({
+    description: 'Nota no IMDB',
+    example: '8',
+  })
+  imdbScore: number;
 
   @IsNotEmpty()
   @IsString()
@@ -62,5 +70,5 @@ export class CreateGameDto {
     description: 'url de uma gameplay do youtbe.',
     example: 'uirl',
   })
-  gameplayYt: string;
+  gameplayYouTubeUrl: string;
 }

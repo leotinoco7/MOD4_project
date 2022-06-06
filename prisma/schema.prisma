@@ -9,31 +9,10 @@ datasource db {
 
 model User {
   id       String @id @default(uuid())
-  nickname String @unique
+  email    String @unique
   name     String
   password String
-  image    String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Game {
-  id         String @id @default(uuid())
-  name       String
-  desc       String
-  image      String
-  year       Int
-  trailerYt  String
-  gameplayYt String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Genre {
-  id   String @id @default(uuid())
-  name String
+  cpf      Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -43,6 +22,28 @@ model Profile {
   id       String @id @default(uuid())
   title    String
   imageURL String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Game {
+  id                 String @id @default(uuid())
+  title              String
+  coverImageURL      String
+  description        String
+  year               Int
+  trailerYt          String
+  imdbScore          Int
+  gameplayYouTubeUrl String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Genre {
+  id   String @id @default(uuid())
+  name String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
