@@ -4,6 +4,7 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { handleError } from 'src/utils/handle-error.util';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { Profile } from './entities/profile.entity';
@@ -43,7 +44,7 @@ export class ProfilesService {
   create(dto: CreateProfileDto): Promise<Profile> {
     const data: Profile = { ...dto };
 
-    return this.prisma.profile.create({ data }).catch(this.handleError);
+    return this.prisma.profile.create({ data }).catch(handleError);
   }
 
   async findById(id: string): Promise<Profile> {
@@ -52,14 +53,5 @@ export class ProfilesService {
       throw new NotFoundException(`Registro com o Id '${id}' não encontrado.`);
     }
     return record;
-  }
-
-  handleError(error: Error): undefined {
-    const errorLines = error.message?.split('\n');
-    const lastErrorLine = errorLines[errorLines.length - 1]?.trim();
-
-    throw new UnprocessableEntityException(
-      lastErrorLine || 'Algum erro ocorreu ao executar a operação.',
-    );
   }
 }

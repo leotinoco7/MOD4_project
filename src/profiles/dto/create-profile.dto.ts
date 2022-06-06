@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsUrl } from 'class-validator';
+import { IsNotEmpty, IsString, IsUrl, IsUUID } from 'class-validator';
 
 export class CreateProfileDto {
   @ApiProperty({
@@ -21,4 +21,11 @@ export class CreateProfileDto {
   @IsUrl()
   @IsString()
   imageURL: string;
+
+  @IsUUID()
+  @ApiProperty({
+    description: 'userID do perfil',
+    example: 'a912389asd89123',
+  })
+  userId: string;
 }

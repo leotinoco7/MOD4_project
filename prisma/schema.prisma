@@ -14,12 +14,16 @@ model User {
   password String
   cpf      Int
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  profiles  Profile[]
 }
 
 model Profile {
-  id       String @id @default(uuid())
+  id String @id @default(uuid())
+
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String @map("user_id")
   title    String
   imageURL String
 
@@ -39,11 +43,13 @@ model Game {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  genres    Genre[]
 }
 
 model Genre {
-  id   String @id @default(uuid())
-  name String
+  id    String @id @default(uuid())
+  name  String
+  games Game[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
