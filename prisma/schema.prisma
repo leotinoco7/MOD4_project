@@ -32,7 +32,7 @@ model Profile {
 }
 
 model Game {
-  id                 String @id @default(uuid())
+  id                 String  @id @default(uuid())
   title              String
   coverImageURL      String
   description        String
@@ -40,6 +40,7 @@ model Game {
   trailerYt          String
   imdbScore          Int
   gameplayYouTubeUrl String
+  isFavorite         Boolean
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

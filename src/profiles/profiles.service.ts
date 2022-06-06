@@ -3,6 +3,7 @@ import {
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { handleError } from 'src/utils/handle-error.util';
 import { CreateProfileDto } from './dto/create-profile.dto';
@@ -13,13 +14,20 @@ import { Profile } from './entities/profile.entity';
 export class ProfilesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async update(
-    id: string,
-    updateProfileDto: UpdateProfileDto,
-  ): Promise<Profile> {
+  create(dto: CreateProfileDto) {
+    const data: Prisma.ProfileCreateInput = { user: {
+      connect {
+        id: dto.userId,
+      }
+    } };
+
+    return this.prisma.profile.create({ data }).catch(handleError);
+  }
+
+  async update(id: string, updateProfileDto: UpdateProfileDto) {
     await this.findById(id);
 
-    const data: Partial<Profile> = { ...updateProfileDto };
+    const data = { ...updateProfileDto };
 
     return this.prisma.profile.update({
       where: { id },
@@ -33,18 +41,12 @@ export class ProfilesService {
     await this.prisma.profile.delete({ where: { id } });
   }
 
-  findAll(): Promise<Profile[]> {
+  findAll() {
     return this.prisma.profile.findMany();
   }
 
   async findOne(id: string): Promise<Profile> {
     return this.findById(id);
-  }
-
-  create(dto: CreateProfileDto): Promise<Profile> {
-    const data: Profile = { ...dto };
-
-    return this.prisma.profile.create({ data }).catch(handleError);
   }
 
   async findById(id: string): Promise<Profile> {

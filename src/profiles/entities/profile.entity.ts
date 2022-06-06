@@ -4,5 +4,5 @@ export class Profile {
   id?: string;
   title: string;
   imageURL: string;
-  user?: User;
+  userId?: User;
 }

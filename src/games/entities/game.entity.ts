@@ -7,6 +7,7 @@ export class Game {
   trailerYt: string;
   imdbScore: number;
   gameplayYouTubeUrl: string;
+  isFavorite: boolean;
 
   createdAt?: Date;
   updatedAt?: Date;
