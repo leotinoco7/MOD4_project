@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsBoolean,
   IsNotEmpty,
   IsNumber,
   IsPositive,
@@ -72,12 +71,4 @@ export class CreateGameDto {
     example: 'url',
   })
   gameplayYouTubeUrl: string;
-
-  @IsNotEmpty()
-  @IsBoolean()
-  @ApiProperty({
-    description: 'Marcar se for favorito:',
-    example: 'true ou false',
-  })
-  isFavorite: boolean;
 }

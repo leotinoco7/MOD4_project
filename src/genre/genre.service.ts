@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { handleError } from 'src/utils/handle-error.util';
 import { CreateGenreDto } from './dto/create-genre.dto';
@@ -18,10 +14,12 @@ export class GenreService {
 
     const data: Partial<Genre> = { ...updateGenreDto };
 
-    return this.prisma.genre.update({
-      where: { id },
-      data,
-    });
+    return this.prisma.genre
+      .update({
+        where: { id },
+        data,
+      })
+      .catch(handleError);
   }
 
   async remove(id: string) {

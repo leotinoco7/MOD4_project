@@ -1,59 +1,73 @@
 import {
+  BadRequestException,
+  HttpException,
   Injectable,
   NotFoundException,
-  UnprocessableEntityException,
 } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { handleError } from 'src/utils/handle-error.util';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { PrismaService } from '../prisma/prisma.service';
 import { Profile } from './entities/profile.entity';
 
 @Injectable()
 export class ProfilesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(dto: CreateProfileDto) {
-    const data: Prisma.ProfileCreateInput = { user: {
-      connect {
-        id: dto.userId,
-      }
-    } };
+  async create(dto: CreateProfileDto): Promise<Profile> {
+    const data: Profile = { ...dto };
 
-    return this.prisma.profile.create({ data }).catch(handleError);
+    return this.prisma.profile.create({ data }).catch(this.handleError);
   }
 
-  async update(id: string, updateProfileDto: UpdateProfileDto) {
-    await this.findById(id);
+  async findAll(): Promise<Profile[]> {
+    const list = await this.prisma.profile.findMany();
 
-    const data = { ...updateProfileDto };
-
-    return this.prisma.profile.update({
-      where: { id },
-      data,
-    });
-  }
-
-  async remove(id: string) {
-    await this.findById(id);
-
-    await this.prisma.profile.delete({ where: { id } });
-  }
-
-  findAll() {
-    return this.prisma.profile.findMany();
-  }
-
-  async findOne(id: string): Promise<Profile> {
-    return this.findById(id);
-  }
-
-  async findById(id: string): Promise<Profile> {
-    const record = await this.prisma.profile.findUnique({ where: { id } });
-    if (!record) {
-      throw new NotFoundException(`Registro com o Id '${id}' não encontrado.`);
+    if (list.length === 0) {
+      throw new NotFoundException('Não existem gêneros cadastrados.');
     }
+    return list;
+  }
+
+  async findOne(id: string) {
+    const record = await this.prisma.profile.findUnique({ where: { id } });
+
+    if (!record) {
+      throw new NotFoundException(
+        `Registro com o Id '${id}' não encontrado ou é inválido. `,
+      );
+    }
+
     return record;
+  }
+
+  async update(id: string, dto: UpdateProfileDto): Promise<Profile> {
+    await this.findOne(id);
+
+    const data: Partial<Profile> = { ...dto };
+
+    return this.prisma.profile
+      .update({
+        where: { id },
+        data,
+      })
+      .catch(this.handleError);
+  }
+
+  async delete(id: string) {
+    await this.findOne(id);
+
+    await this.prisma.profile.delete({
+      where: { id },
+    });
+    throw new HttpException('', 204);
+  }
+
+  handleError(error: Error): undefined {
+    const errorLines = error.message?.split('\n');
+    const lastErrorLine = errorLines[errorLines.length - 1].trim();
+
+    throw new BadRequestException(
+      lastErrorLine || 'Algum erro ocorreu ao executar a operação.',
+    );
   }
 }

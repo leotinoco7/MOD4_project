@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsInt, IsNotEmpty, IsString, Length } from 'class-validator';
+import {
+  IsBoolean,
+  IsEmail,
+  IsInt,
+  IsNotEmpty,
+  IsString,
+  Length,
+} from 'class-validator';
 
 export class CreateUserDto {
   @IsEmail()
@@ -38,9 +45,10 @@ export class CreateUserDto {
   @IsInt()
   cpf: number;
 
+  @IsBoolean()
   @ApiProperty({
-    description: 'confirm pw',
-    example: '??',
+    description: 'Admin ou não',
+    example: 'true ou false',
   })
-  confirmPassword: string;
+  isAdmin: boolean;
 }

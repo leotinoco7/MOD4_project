@@ -1,7 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { handleError } from 'src/utils/handle-error.util';
 import { CreateGameDto } from './dto/create-game.dto';
@@ -17,10 +14,12 @@ export class GameService {
 
     const data: Partial<Game> = { ...updateGameDto };
 
-    return this.prisma.game.update({
-      where: { id },
-      data,
-    });
+    return this.prisma.game
+      .update({
+        where: { id },
+        data,
+      })
+      .catch(handleError);
   }
 
   async remove(id: string) {
@@ -40,9 +39,6 @@ export class GameService {
   create(dto: CreateGameDto): Promise<Game> {
     const data: Game = {
       ...dto,
-      id: '',
-      createdAt: undefined,
-      updatedAt: undefined,
     };
 
     return this.prisma.game.create({ data }).catch(handleError);

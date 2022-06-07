@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -16,14 +18,14 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 @ApiTags('profiles')
 @Controller('profiles')
 export class ProfilesController {
-  constructor(private readonly userService: ProfilesService) {}
+  constructor(private readonly profilesService: ProfilesService) {}
 
   @Post('create')
   @ApiOperation({
     summary: 'Criar usuário',
   })
   create(@Body() dto: CreateProfileDto): Promise<Profile> {
-    return this.userService.create(dto);
+    return this.profilesService.create(dto);
   }
 
   @Get('find')
@@ -31,7 +33,7 @@ export class ProfilesController {
     summary: 'Visualizar todos usuarios',
   })
   findAll(): Promise<Profile[]> {
-    return this.userService.findAll();
+    return this.profilesService.findAll();
   }
 
   @Get(':id')
@@ -39,7 +41,7 @@ export class ProfilesController {
     summary: 'Buscar usuário',
   })
   findOne(@Param('id') id: string): Promise<Profile> {
-    return this.userService.findOne(id);
+    return this.profilesService.findOne(id);
   }
 
   @Patch(':id')
@@ -47,14 +49,15 @@ export class ProfilesController {
     summary: 'Update por ID',
   })
   update(@Param('id') id: string, @Body() updateProfilesDto: UpdateProfileDto) {
-    return this.userService.update(id, updateProfilesDto);
+    return this.profilesService.update(id, updateProfilesDto);
   }
 
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   @ApiOperation({
     summary: 'Delete por ID',
   })
   remove(@Param('id') id: string) {
-    return this.userService.remove(id);
+    return this.profilesService.delete(id);
   }
 }
