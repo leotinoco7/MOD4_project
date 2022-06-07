@@ -8,19 +8,19 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(uuid())
-  email    String  @unique
-  name     String
-  password String
-  cpf      Int
-  isAdmin  Boolean
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String    @id @default(uuid())
+  email     String    @unique
+  name      String
+  password  String
+  cpf       Int
+  isAdmin   Boolean
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  profiles  Profile[]
 }
 
 model Game {
-  id                 String @id @default(uuid())
+  id                 String    @id @default(uuid())
   title              String
   coverImageURL      String
   description        String
@@ -28,24 +28,27 @@ model Game {
   trailerYt          String
   imdbScore          Int
   gameplayYouTubeUrl String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  genres             Genre[]
+  profiles           Profile[]
 }
 
 model Genre {
-  id   String @id @default(uuid())
-  name String
-
+  id        String   @id @default(uuid())
+  name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  games     Game[]
 }
 
 model Profile {
-  id       String @id @default(uuid())
-  title    String
-  imageURL String
-
+  id        String   @id @default(uuid())
+  title     String
+  imageURL  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  games     Game[]
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
 }
