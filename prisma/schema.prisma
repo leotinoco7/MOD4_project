@@ -8,19 +8,18 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  email     String    @unique
+  id        String   @id @default(uuid())
+  email     String   @unique
   name      String
   password  String
   cpf       Int
   isAdmin   Boolean
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  profiles  Profile[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Game {
-  id                 String    @id @default(uuid())
+  id                 String   @id @default(uuid())
   title              String
   coverImageURL      String
   description        String
@@ -28,10 +27,8 @@ model Game {
   trailerYt          String
   imdbScore          Int
   gameplayYouTubeUrl String
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
-  genres             Genre[]
-  profiles           Profile[]
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }
 
 model Genre {
@@ -39,7 +36,6 @@ model Genre {
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  games     Game[]
 }
 
 model Profile {
@@ -48,7 +44,73 @@ model Profile {
   imageURL  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  games     Game[]
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
 }
+
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
+// model User {
+//   id        String    @id @default(uuid())
+//   email     String    @unique
+//   name      String
+//   password  String
+//   cpf       Int
+//   isAdmin   Boolean
+//   createdAt DateTime  @default(now())
+//   updatedAt DateTime  @updatedAt
+//   profiles  Profile[]
+// }
+
+// model Game {
+//   id                 String         @id @default(uuid())
+//   title              String
+//   coverImageURL      String
+//   description        String
+//   year               Int
+//   trailerYt          String
+//   imdbScore          Int
+//   gameplayYouTubeUrl String
+//   createdAt          DateTime       @default(now())
+//   updatedAt          DateTime       @updatedAt
+//   genres             Genre[]
+//   profiles           Profile[]
+//   GamesProfile       GamesProfile[]
+// }
+
+// model Genre {
+//   id        String   @id @default(uuid())
+//   name      String
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   games     Game[]
+// }
+
+// model Profile {
+//   id           String         @id @default(uuid())
+//   title        String
+//   imageURL     String
+//   createdAt    DateTime       @default(now())
+//   updatedAt    DateTime       @updatedAt
+//   games        Game[]
+//   user         User           @relation(fields: [userId], references: [id])
+//   userId       String
+//   GamesProfile GamesProfile[]
+// }
+
+// model GamesProfile {
+//   id     String @id @default(uuid())
+//   game   Game   @relation(fields: [gameId], references: [id])
+//   gameId String
+
+//   profile   Profile @relation(fields: [profileId], references: [id])
+//   profileId String
+
+//   createdAt DateTime @default(now()) @map("created_at")
+//   updatedAt DateTime @updatedAt @map("updated_at")
+// }
