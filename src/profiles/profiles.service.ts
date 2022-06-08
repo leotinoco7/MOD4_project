@@ -4,34 +4,56 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { Profile } from './entities/profile.entity';
 import { handleError } from 'src/utils/handle-error.util';
+import { Prisma } from '@prisma/client';
+import { notFoundError } from 'src/utils/not-found.util';
 
 @Injectable()
 export class ProfilesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(dto: CreateProfileDto): Promise<Profile> {
-    const data: Profile = { ...dto };
-
+  create(dto: CreateProfileDto) {
+    const data: Prisma.ProfileCreateInput = {
+      user: {
+        connect: {
+          id: dto.userId,
+        },
+      },
+      ...dto,
+    };
     return this.prisma.profile.create({ data }).catch(handleError);
   }
 
-  async findAll(): Promise<Profile[]> {
-    const list = await this.prisma.profile.findMany();
+  async findAll() {
+    const list = await this.prisma.profile.findMany({
+      select: {
+        id: true,
+        title: true,
+        imageURL: true,
+      },
+    });
 
     if (list.length === 0) {
-      throw new NotFoundException('Não existem gêneros cadastrados.');
+      throw new NotFoundException('não existem perfis cadastrados.');
     }
     return list;
   }
 
-  async findOne(id: string) {
-    const record = await this.prisma.profile.findUnique({ where: { id } });
+  async findOne(profileId: string) {
+    const record = await this.prisma.profile.findUnique({
+      where: { id: profileId },
+      select: {
+        title: true,
+        imageURL: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
 
-    if (!record) {
-      throw new NotFoundException(
-        `Registro com o Id '${id}' não encontrado ou é inválido. `,
-      );
-    }
+    notFoundError(record, profileId);
 
     return record;
   }
@@ -39,7 +61,10 @@ export class ProfilesService {
   async update(id: string, dto: UpdateProfileDto): Promise<Profile> {
     await this.findOne(id);
 
-    const data: Partial<Profile> = { ...dto };
+    const data: Prisma.ProfileUpdateInput = {
+      title: dto.title,
+      imageURL: dto.imageURL,
+    };
 
     return this.prisma.profile
       .update({
@@ -55,6 +80,6 @@ export class ProfilesService {
     await this.prisma.profile.delete({
       where: { id },
     });
-    throw new HttpException('', 204);
+    throw new HttpException('Deletado com sucesso.', 204);
   }
 }

@@ -3,8 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
-  HttpStatus,
   Param,
   Patch,
   Post,
@@ -12,7 +10,6 @@ import {
 import { ProfilesService } from './profiles.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Profile } from './entities/profile.entity';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @ApiTags('profiles')
@@ -20,44 +17,43 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 export class ProfilesController {
   constructor(private readonly profilesService: ProfilesService) {}
 
-  @Post('create')
+  @Post()
   @ApiOperation({
-    summary: 'Criar usuário',
+    summary: 'Criar novo perfil de usuário.',
   })
-  create(@Body() dto: CreateProfileDto): Promise<Profile> {
+  create(@Body() dto: CreateProfileDto) {
     return this.profilesService.create(dto);
   }
 
   @Get('find')
   @ApiOperation({
-    summary: 'Visualizar todos usuarios',
+    summary: 'Listar todos os usuários',
   })
-  findAll(): Promise<Profile[]> {
+  findAll() {
     return this.profilesService.findAll();
   }
 
-  @Get(':id')
+  @Get(':profileId')
   @ApiOperation({
-    summary: 'Buscar usuário',
+    summary: 'Visualizar um perfil pelo ID.',
   })
-  findOne(@Param('id') id: string): Promise<Profile> {
+  findOne(@Param('profileId') id: string) {
     return this.profilesService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch(':profileId')
   @ApiOperation({
-    summary: 'Update por ID',
+    summary: 'editar um perfil',
   })
-  update(@Param('id') id: string, @Body() updateProfilesDto: UpdateProfileDto) {
-    return this.profilesService.update(id, updateProfilesDto);
+  update(@Param('profileId') id: string, @Body() dto: UpdateProfileDto) {
+    return this.profilesService.update(id, dto);
   }
 
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @Delete(':id')
+  @Delete(':profileId')
   @ApiOperation({
-    summary: 'Delete por ID',
+    summary: 'Deletar um perfil pelo ID.',
   })
-  remove(@Param('id') id: string) {
+  delete(@Param('profileId') id: string) {
     return this.profilesService.delete(id);
   }
 }
