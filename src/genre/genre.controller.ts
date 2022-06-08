@@ -57,6 +57,6 @@ export class GenreController {
     summary: 'Delete por ID',
   })
   remove(@Param('id') id: string) {
-    return this.genreService.remove(id);
+    return this.genreService.delete(id);
   }
 }
