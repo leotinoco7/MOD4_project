@@ -5,7 +5,7 @@ Projeto que visa construir uma API de games (como se fosse uma Netflix de games)
 ## Deploy
 
 O projeto conta com deploy no render.
-````` Link:
+````Link:
 https://mod4-gameapi.onrender.com/api
 ````
 
