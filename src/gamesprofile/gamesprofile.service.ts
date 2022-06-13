@@ -1,8 +1,6 @@
 import { PrismaService } from '../prisma/prisma.service';
 import { notFoundError } from '../utils/not-found.util';
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
-import { GamesProfile } from './entities/gamesprofile.entity';
 
 @Injectable()
 export class GamesprofileService {
