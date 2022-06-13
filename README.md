@@ -1,13 +1,13 @@
-# MOD4_project
+# MOD4_project (GameAPI)
 
 Projeto que visa construir uma API de games (como se fosse uma Netflix de games), aonde o usuário poderá adicionar seus jogos favoritos, criar/deletar perfis, dentre outras funções.
 
 ## Deploy
 
-O projeto conta com deploy no render.
-````Link:
-https://mod4-gameapi.onrender.com/api
-````
+O projeto conta com deploy do backend & database no render:
+<br><b><a href=https://mod4-gameapi.onrender.com/api/>Link do Deploy</a></b>
+
+## Caso deseje rodar localmente, siga os passos abaixo:
 
 ## Clonando
 
