@@ -10,7 +10,15 @@ import { GamesprofileModule } from './gamesprofile/gamesprofile.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [UserModule, PrismaModule, GamesModule, GenreModule, ProfilesModule, GamesprofileModule, AuthModule],
+  imports: [
+    UserModule,
+    PrismaModule,
+    GamesModule,
+    GenreModule,
+    ProfilesModule,
+    GamesprofileModule,
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
