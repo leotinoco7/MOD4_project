@@ -5,7 +5,7 @@ API - Games
 ## Clonando
 
 ````bash
-git clone https://github.com/vinhas93/projeto_mod4_backend_game_center.git
+git clone https://github.com/leotinoco7/MOD4_proejct.git
 ````
 
 ### Installation
