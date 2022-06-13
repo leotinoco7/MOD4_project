@@ -20,7 +20,6 @@ async function bootstrap() {
     .addTag('games')
     .addTag('homepage')
     .addBearerAuth()
-    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

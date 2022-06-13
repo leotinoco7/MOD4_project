@@ -11,11 +11,11 @@ import { notFoundError } from 'src/utils/not-found.util';
 export class ProfilesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(dto: CreateProfileDto) {
+  create(dto: CreateProfileDto, userId: string) {
     const data: Prisma.ProfileCreateInput = {
       user: {
         connect: {
-          id: dto.userId,
+          id: userId,
         },
       },
       ...dto,

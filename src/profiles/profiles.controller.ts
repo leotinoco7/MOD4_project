@@ -6,13 +6,19 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ProfilesService } from './profiles.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { LoggedUser } from 'src/auth/logged-user.decorator';
+import { User } from 'src/user/entities/user.entity';
 
 @ApiTags('profiles')
+@UseGuards(AuthGuard())
+@ApiBearerAuth()
 @Controller('profiles')
 export class ProfilesController {
   constructor(private readonly profilesService: ProfilesService) {}
@@ -21,8 +27,8 @@ export class ProfilesController {
   @ApiOperation({
     summary: 'Criar novo perfil de usuário.',
   })
-  create(@Body() dto: CreateProfileDto) {
-    return this.profilesService.create(dto);
+  create(@LoggedUser() user: User, @Body() dto: CreateProfileDto) {
+    return this.profilesService.create(dto, user.id);
   }
 
   @Get('find')
