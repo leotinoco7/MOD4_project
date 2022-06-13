@@ -23,16 +23,15 @@ export class ProfilesService {
     return this.prisma.profile.create({ data }).catch(handleError);
   }
 
-  async findAll() {
-    const list = await this.prisma.profile.findMany({
+  async findAll(userId: string) {
+    const list = await this.prisma.user.findUnique({
+      where: { id: userId },
       select: {
-        id: true,
-        title: true,
-        imageURL: true,
+        profiles: { select: { id: true, title: true, imageURL: true } },
       },
     });
 
-    if (list.length === 0) {
+    if (list.profiles.length == 0) {
       throw new NotFoundException('não existem perfis cadastrados.');
     }
     return list;
