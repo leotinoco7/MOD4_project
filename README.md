@@ -1,6 +1,13 @@
 # MOD4_project
 
-API - Games
+Projeto que visa construir uma API de games (como se fosse uma Netflix de games), aonde o usuário poderá adicionar seus jogos favoritos, criar/deletar perfis, dentre outras funções.
+
+## Deploy
+
+O projeto conta com deploy no render.
+````` Link:
+https://mod4-gameapi.onrender.com/api
+````
 
 ## Clonando
 
@@ -42,7 +49,12 @@ $ npm run test:cov
 
 ## 🛠️ Construído com
 
-- NodeJS | NestJs | TypeScript
+- NodeJS
+- TypeScript
+- NestJS
+- Prisma
+- PostgreSQL
+- Swagger
 
 ## 📄 Licença
 
