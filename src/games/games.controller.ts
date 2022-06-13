@@ -15,6 +15,8 @@ import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { UserAdmin } from 'src/auth/isadmin-user.decorator';
+import { User } from '@prisma/client';
 
 @ApiTags('games')
 @UseGuards(AuthGuard())
@@ -27,7 +29,7 @@ export class GamesController {
   @ApiOperation({
     summary: 'adicionar um jogo',
   })
-  create(@Body() createGameDto: CreateGameDto) {
+  create(@UserAdmin() user: User, @Body() createGameDto: CreateGameDto) {
     return this.gamesService.create(createGameDto);
   }
 
@@ -35,7 +37,7 @@ export class GamesController {
   @ApiOperation({
     summary: 'procurar todos os jogos',
   })
-  findAll() {
+  findAll(@UserAdmin() user: User) {
     return this.gamesService.findAll();
   }
 
@@ -43,7 +45,7 @@ export class GamesController {
   @ApiOperation({
     summary: 'procurar por id',
   })
-  findOne(@Param('id') id: string) {
+  findOne(@UserAdmin() user: User, @Param('id') id: string) {
     return this.gamesService.findOne(id);
   }
 
@@ -51,7 +53,11 @@ export class GamesController {
   @ApiOperation({
     summary: 'update por id',
   })
-  update(@Param('id') id: string, @Body() updateGameDto: UpdateGameDto) {
+  update(
+    @UserAdmin() user: User,
+    @Param('id') id: string,
+    @Body() updateGameDto: UpdateGameDto,
+  ) {
     return this.gamesService.update(id, updateGameDto);
   }
 
@@ -60,7 +66,7 @@ export class GamesController {
   @ApiOperation({
     summary: 'Deletar por ID',
   })
-  remove(@Param('id') id: string) {
+  remove(@UserAdmin() user: User, @Param('id') id: string) {
     return this.gamesService.delete(id);
   }
 }

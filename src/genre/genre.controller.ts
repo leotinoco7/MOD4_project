@@ -15,6 +15,8 @@ import { CreateGenreDto } from './dto/create-genre.dto';
 import { UpdateGenreDto } from './dto/update-genre.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { UserAdmin } from 'src/auth/isadmin-user.decorator';
+import { User } from 'src/user/entities/user.entity';
 
 @ApiTags('genre')
 @UseGuards(AuthGuard())
@@ -27,7 +29,7 @@ export class GenreController {
   @ApiOperation({
     summary: 'Criar um gênero',
   })
-  create(@Body() createGenreDto: CreateGenreDto) {
+  create(@UserAdmin() user: User, @Body() createGenreDto: CreateGenreDto) {
     return this.genreService.create(createGenreDto);
   }
 
@@ -35,7 +37,7 @@ export class GenreController {
   @ApiOperation({
     summary: 'Buscar todos os gêneros',
   })
-  findAll() {
+  findAll(@UserAdmin() user: User) {
     return this.genreService.findAll();
   }
 
@@ -43,7 +45,7 @@ export class GenreController {
   @ApiOperation({
     summary: 'Procurar por id',
   })
-  findOne(@Param('id') id: string) {
+  findOne(@UserAdmin() user: User, @Param('id') id: string) {
     return this.genreService.findOne(id);
   }
 
@@ -51,7 +53,11 @@ export class GenreController {
   @ApiOperation({
     summary: 'Update por ID',
   })
-  update(@Param('id') id: string, @Body() updateGenreDto: UpdateGenreDto) {
+  update(
+    @UserAdmin() user: User,
+    @Param('id') id: string,
+    @Body() updateGenreDto: UpdateGenreDto,
+  ) {
     return this.genreService.update(id, updateGenreDto);
   }
 
@@ -60,7 +66,7 @@ export class GenreController {
   @ApiOperation({
     summary: 'Delete por ID',
   })
-  remove(@Param('id') id: string) {
+  remove(@UserAdmin() user: User, @Param('id') id: string) {
     return this.genreService.delete(id);
   }
 }

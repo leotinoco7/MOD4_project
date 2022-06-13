@@ -14,6 +14,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserAdmin } from 'src/auth/isadmin-user.decorator';
 
 @ApiTags('user')
 @Controller('user')
@@ -32,7 +33,7 @@ export class UserController {
   @ApiOperation({
     summary: 'Visualizar todos usuarios',
   })
-  findAll(): Promise<User[]> {
+  findAll(@UserAdmin() user: User): Promise<User[]> {
     return this.userService.findAll();
   }
 
@@ -40,7 +41,7 @@ export class UserController {
   @ApiOperation({
     summary: 'Buscar usuário',
   })
-  findOne(@Param('id') id: string): Promise<User> {
+  findOne(@UserAdmin() user: User, @Param('id') id: string): Promise<User> {
     return this.userService.findOne(id);
   }
 
@@ -48,7 +49,11 @@ export class UserController {
   @ApiOperation({
     summary: 'Update por ID',
   })
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(
+    @UserAdmin() user: User,
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
     return this.userService.update(id, updateUserDto);
   }
 
@@ -57,7 +62,7 @@ export class UserController {
   @ApiOperation({
     summary: 'Delete por ID',
   })
-  remove(@Param('id') id: string) {
+  remove(@UserAdmin() user: User, @Param('id') id: string) {
     return this.userService.remove(id);
   }
 }
